@@ -7,5 +7,48 @@ output: github_document
 
 ```{r setup, include=FALSE}
 library(tidyverse)
+library(moderndive)
 ```
 
+# Problem 1
+```{r}
+data("early_january_weather")
+```
+
+The dataset *early_january_weather* describes hourly weather data from nycflights13 for the month of January 2013. To summarize, the data has a total of `r nrow(early_january_weather)` observations, and `r ncol(early_january_weather)` variables.
+
+The variables in this dataset include the following variables: **origin**, **year**, **month**, **day**, **hour**, **temperature (in F)**, **dewp (dewpoint in F)**, **humidity**, **wind direction (in mph)**, **wind speed (in mph)**, **wind gust**, **precipitation (in inches)**, **pressure (in millibars)**,  **visibility (in miles)**, **time hour (date and hour of the recording)**. 
+
+The mean temperature is `r mean(early_january_weather$temp)` with standard deviation of `r sd(early_january_weather$temp)`, and the mean of relative humidity is `r mean(early_january_weather$humid)` with standard deviation of `r sd(early_january_weather$humid)`
+
+```{r}
+ggplot(early_january_weather, aes(x=time_hour, y=temp, color=humid)) + geom_point()
+ggsave("scatterPlot_time_VS_temp.pdf")
+```
+
+Based on the figure, we perceived that as date time gets closer to the mid January, the general trend of temperature increases. The relative humidity seems to be mostly below 80, with several days where it increases to 100, such as January 11 to 14. 
+
+
+
+# Problem 2
+```{r}
+df = tibble(sample_points=rnorm(10, mean=0, sd=1),
+            pos_indicator= sample_points>1,
+            var_char= c("create", "some", "random", "char", "variable","for", "me", "please", "fangyi", "chen"),
+            vec_factor = factor(c("low", "low", "high", "moderate", "moderate", "high", "high", "low", "low", "moderate"))
+)
+
+# Try taking the mean of the df columns
+for (i in 1:ncol(df)) {
+  print(mean(pull(df, i)))
+}
+```
+For vector types such as numeric or logical, we can easily take the mean. But for vector types such as factor or character, we can not take the mean directly. For factor variable, we can use function `as.numeric` which will return numeric codes corresponding to the factor level. 
+
+```{r,eval=FALSE}
+# Converted to the numeric types 
+for (i in 1:ncol(df)) {
+  converted_data = as.numeric(pull(df, i))
+}
+```
+After we converted to all column variables to numeric, we can take the mean for the original factor variables, as this function `as.numeric` which will return numeric codes corresponding to the factor level, allowing us to calculate the average. It does explain what happens in the previous question where we tried to take the means for all column variables. Essentially, the `mean` function can only handle the numeric variables. 
