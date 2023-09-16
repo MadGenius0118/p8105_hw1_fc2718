@@ -1,0 +1,11 @@
+---
+title: "p8105_hw1_fc2718"
+author: "Fangyi Chen"
+date: "2023-09-16"
+output: github_document
+---
+
+```{r setup, include=FALSE}
+library(tidyverse)
+```
+
